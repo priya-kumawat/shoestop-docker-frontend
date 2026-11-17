@@ -7,14 +7,19 @@ import { productContext } from '../contextAPI/Context';
 
 function NavbarLog() {
     const [showProfile, setShowProfile] = useState(false);
+    const [showPass, setShowPass] = useState(false);
     const { cartProduct } = useContext(productContext) || {};
     const cartCount = Array.isArray(cartProduct) ? cartProduct.length : 0;
 
-    let user = { name: 'User', email: '' };
+    let user = { name: 'User', email: '', password: '••••••••' };
     try {
         const stored = JSON.parse(localStorage.getItem('userInfo') || '{}');
         if (stored.name || stored.email) {
-            user = { name: stored.name || stored.email.split('@')[0], email: stored.email || '' };
+            user = {
+                name: stored.name || stored.email.split('@')[0],
+                email: stored.email || 'Not provided',
+                password: stored.password || '••••••••'
+            };
         }
     } catch (e) {}
 
@@ -84,23 +89,50 @@ function NavbarLog() {
                         {showProfile && (
                             <div style={{
                                 position: 'absolute',
-                                top: '46px',
-                                right: '95px',
+                                top: '48px',
+                                right: '85px',
                                 background: '#fff',
                                 color: '#212529',
-                                padding: '14px 18px',
-                                borderRadius: '10px',
-                                boxShadow: '0 6px 20px rgba(0,0,0,0.2)',
+                                padding: '16px 18px',
+                                borderRadius: '12px',
+                                boxShadow: '0 8px 24px rgba(0,0,0,0.22)',
                                 zIndex: 1050,
-                                minWidth: '220px',
+                                minWidth: '265px',
                                 fontSize: '13px',
-                                border: '1px solid #e9ecef'
+                                border: '1px solid #dee2e6'
                             }}>
-                                <div style={{ fontWeight: '700', fontSize: '15px', marginBottom: '2px' }}>{user.name}</div>
-                                <div style={{ color: '#6c757d', marginBottom: '8px' }}>{user.email || 'Verified Member'}</div>
-                                <span style={{ background: '#d1e7dd', color: '#0f5132', padding: '3px 9px', borderRadius: '12px', fontSize: '11px', fontWeight: '600' }}>
-                                    ● Active Session
-                                </span>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e9ecef', paddingBottom: '8px', marginBottom: '10px' }}>
+                                    <span style={{ fontWeight: '800', fontSize: '14px' }}>User Account Details</span>
+                                    <span style={{ background: '#d1e7dd', color: '#0f5132', padding: '2px 8px', borderRadius: '10px', fontSize: '11px', fontWeight: '600' }}>
+                                        ● Active
+                                    </span>
+                                </div>
+                                <div style={{ marginBottom: '8px' }}>
+                                    <span style={{ color: '#6c757d', fontSize: '11px', display: 'block' }}>USERNAME</span>
+                                    <strong style={{ fontSize: '14px' }}>{user.name}</strong>
+                                </div>
+                                <div style={{ marginBottom: '8px' }}>
+                                    <span style={{ color: '#6c757d', fontSize: '11px', display: 'block' }}>EMAIL ID</span>
+                                    <strong style={{ fontSize: '13px' }}>{user.email}</strong>
+                                </div>
+                                <div style={{ marginBottom: '12px' }}>
+                                    <span style={{ color: '#6c757d', fontSize: '11px', display: 'block' }}>PASSWORD</span>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <strong style={{ fontSize: '13px', letterSpacing: showPass ? 'normal' : '2px' }}>
+                                            {showPass ? user.password : '••••••••'}
+                                        </strong>
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPass(!showPass)}
+                                            style={{ background: 'none', border: '1px solid #ced4da', borderRadius: '6px', padding: '1px 8px', fontSize: '11px', cursor: 'pointer' }}
+                                        >
+                                            {showPass ? 'Hide' : 'Show'}
+                                        </button>
+                                    </div>
+                                </div>
+                                <Button variant="danger" size="sm" style={{ width: '100%', fontWeight: '600' }} onClick={handleLogout}>
+                                    Log out
+                                </Button>
                             </div>
                         )}
 

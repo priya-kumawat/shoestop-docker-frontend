@@ -21,7 +21,7 @@ const Signup = () => {
     axios.post(url, { name, email, password })
     .then(res => {
         if (res.status === 200 || res.status === 201) {
-            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('token', res.data.token); localStorage.setItem('userInfo', JSON.stringify({ name: res.data.name || name, email: res.data.email || email, password: password }));
             setToken(res.data.token);
             navigate('/');
         }
