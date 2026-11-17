@@ -7,18 +7,16 @@ import { productContext } from '../contextAPI/Context';
 
 function NavbarLog() {
     const [showProfile, setShowProfile] = useState(false);
-    const [showPass, setShowPass] = useState(false);
     const { cartProduct } = useContext(productContext) || {};
     const cartCount = Array.isArray(cartProduct) ? cartProduct.length : 0;
 
-    let user = { name: 'User', email: '', password: '••••••••' };
+    let user = { name: 'User', email: '' };
     try {
         const stored = JSON.parse(localStorage.getItem('userInfo') || '{}');
         if (stored.name || stored.email) {
             user = {
                 name: stored.name || stored.email.split('@')[0],
-                email: stored.email || 'Not provided',
-                password: stored.password || '••••••••'
+                email: stored.email || 'Not provided'
             };
         }
     } catch (e) {}
@@ -38,6 +36,7 @@ function NavbarLog() {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="m-auto" style={{ gap: '18px', fontWeight: '500' }}>
                         <Nav.Link href="/">Home</Nav.Link>
+                        <Nav.Link href="/orders">My Orders</Nav.Link>
                         <Nav.Link href="/cart" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                             <span>Cart</span>
                             <span style={{
@@ -96,12 +95,12 @@ function NavbarLog() {
                                 borderRadius: '12px',
                                 boxShadow: '0 8px 24px rgba(0,0,0,0.22)',
                                 zIndex: 1050,
-                                minWidth: '265px',
+                                minWidth: '255px',
                                 fontSize: '13px',
                                 border: '1px solid #dee2e6'
                             }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e9ecef', paddingBottom: '8px', marginBottom: '10px' }}>
-                                    <span style={{ fontWeight: '800', fontSize: '14px' }}>User Account Details</span>
+                                    <span style={{ fontWeight: '800', fontSize: '14px' }}>Account Profile</span>
                                     <span style={{ background: '#d1e7dd', color: '#0f5132', padding: '2px 8px', borderRadius: '10px', fontSize: '11px', fontWeight: '600' }}>
                                         ● Active
                                     </span>
@@ -115,23 +114,17 @@ function NavbarLog() {
                                     <strong style={{ fontSize: '13px' }}>{user.email}</strong>
                                 </div>
                                 <div style={{ marginBottom: '12px' }}>
-                                    <span style={{ color: '#6c757d', fontSize: '11px', display: 'block' }}>PASSWORD</span>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <strong style={{ fontSize: '13px', letterSpacing: showPass ? 'normal' : '2px' }}>
-                                            {showPass ? user.password : '••••••••'}
-                                        </strong>
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowPass(!showPass)}
-                                            style={{ background: 'none', border: '1px solid #ced4da', borderRadius: '6px', padding: '1px 8px', fontSize: '11px', cursor: 'pointer' }}
-                                        >
-                                            {showPass ? 'Hide' : 'Show'}
-                                        </button>
-                                    </div>
+                                    <span style={{ color: '#6c757d', fontSize: '11px', display: 'block' }}>ROLE & AUTH</span>
+                                    <strong style={{ fontSize: '12px', color: '#0d6efd' }}>Verified Member • JWT Secured</strong>
                                 </div>
-                                <Button variant="danger" size="sm" style={{ width: '100%', fontWeight: '600' }} onClick={handleLogout}>
-                                    Log out
-                                </Button>
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <Button variant="outline-dark" size="sm" style={{ flex: 1, fontWeight: '600' }} href="/orders">
+                                        My Orders
+                                    </Button>
+                                    <Button variant="danger" size="sm" style={{ flex: 1, fontWeight: '600' }} onClick={handleLogout}>
+                                        Log out
+                                    </Button>
+                                </div>
                             </div>
                         )}
 

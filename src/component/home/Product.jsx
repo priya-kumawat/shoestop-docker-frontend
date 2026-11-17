@@ -231,7 +231,7 @@ const Product = () => {
                         </div>
                     </div>
                     <div style={{ borderTop: '1px solid #343a40', paddingTop: '15px', textAlign: 'center', fontSize: '12px' }}>
-                        © 2026 ShoeStop E-Commerce Store. All Rights Reserved.
+                        © 2026 ShoeStop E-Commerce Store • Containerized MERN Deployment • <a href="https://shoestop-docker-backend.onrender.com/api/health" target="_blank" rel="noreferrer" style={{ color: "#20c997", textDecoration: "none", fontWeight: "600" }}>● System Health: Operational</a>
                     </div>
                 </Container>
             </footer>

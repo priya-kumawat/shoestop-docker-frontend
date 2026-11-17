@@ -4,10 +4,12 @@ import { productContext } from '../contextAPI/Context'
 import axios from 'axios'
 
 const Cart = () => {
-  const url = 'https://shoestop-docker-backend.onrender.com/api/addcart'
+  const baseUrl = 'https://shoestop-docker-backend.onrender.com'
+  const url = `${baseUrl}/api/addcart`
   const { cartProduct, setCartProducts, getcart } = useContext(productContext)
   const [total, setTotal] = useState(0)
   const [orderPlaced, setOrderPlaced] = useState(false)
+  const [placing, setPlacing] = useState(false)
 
   useEffect(() => {
     if (getcart) getcart()
@@ -44,13 +46,27 @@ const Cart = () => {
 
   const handleCheckout = async () => {
     const activeToken = (localStorage.getItem('token') || '').replace(/^"|"$/g, '')
-    for (const item of cartProduct) {
-      await axios.delete(`${url}/${item._id}`, {
+    setPlacing(true)
+    try {
+      await axios.post(`${baseUrl}/api/orders`, {
+        items: cartProduct.map(i => ({
+          title: i.title,
+          company: i.company,
+          price: Number(i.price),
+          quantity: parseInt(i.quantity) || 1,
+          image: i.image
+        })),
+        totalAmount: total
+      }, {
         headers: { Authorization: `Bearer ${activeToken}` }
       })
+      if (getcart) getcart()
+      setOrderPlaced(true)
+    } catch (err) {
+      alert('Failed to place order. Please try again.')
+    } finally {
+      setPlacing(false)
     }
-    if (getcart) getcart()
-    setOrderPlaced(true)
   }
 
   return (
@@ -59,15 +75,17 @@ const Cart = () => {
         {orderPlaced ? (
           <div style={{ background: '#fff', padding: '50px 30px', borderRadius: '14px', textAlign: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}>
             <div style={{ fontSize: '48px', marginBottom: '12px' }}>🎉</div>
-            <h3 style={{ fontWeight: '800', color: '#198754' }}>Order Placed Successfully!</h3>
+            <h3 style={{ fontWeight: '800', color: '#198754' }}>Order Placed & Saved!</h3>
             <p style={{ color: '#6c757d', maxWidth: '460px', margin: '10px auto 24px' }}>
-              Thank you for shopping with ShoeStop. Your sneakers are being packed and will be dispatched shortly.
+              Your order has been confirmed and recorded in your account history.
             </p>
-            <Button variant="dark" href="/">Continue Shopping</Button>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
+              <Button variant="success" href="/orders">View My Orders</Button>
+              <Button variant="outline-dark" href="/">Continue Shopping</Button>
+            </div>
           </div>
         ) : cartProduct && cartProduct.length > 0 ? (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '24px', alignItems: 'start' }}>
-            {/* Left: Cart Items */}
             <div style={{ background: '#fff', padding: '24px', borderRadius: '12px', boxShadow: '0 4px 14px rgba(0,0,0,0.06)' }}>
               <h4 style={{ fontWeight: '700', paddingBottom: '14px', borderBottom: '2px solid #f1f3f5', marginBottom: '10px' }}>
                 Shopping Cart ({cartProduct.length} {cartProduct.length === 1 ? 'item' : 'items'})
@@ -84,11 +102,7 @@ const Cart = () => {
                     borderBottom: '1px solid #e9ecef'
                   }}
                 >
-                  <img
-                    src={li.image}
-                    alt={li.title}
-                    style={{ width: '80px', height: '62px', objectFit: 'cover', borderRadius: '8px' }}
-                  />
+                  <img src={li.image} alt={li.title} style={{ width: '80px', height: '62px', objectFit: 'cover', borderRadius: '8px' }} />
                   <div>
                     <p style={{ fontWeight: '600', fontSize: '15px', margin: '0 0 3px 0', color: '#212529' }}>{li.title}</p>
                     <p style={{ fontSize: '13px', color: '#6c757d', margin: 0 }}>{li.company}</p>
@@ -108,7 +122,6 @@ const Cart = () => {
               ))}
             </div>
 
-            {/* Right: Order Summary Box */}
             <div style={{ background: '#fff', padding: '24px', borderRadius: '12px', boxShadow: '0 4px 14px rgba(0,0,0,0.06)' }}>
               <h5 style={{ fontWeight: '700', paddingBottom: '12px', borderBottom: '1px solid #e9ecef', marginBottom: '16px' }}>
                 Order Summary
@@ -125,8 +138,8 @@ const Cart = () => {
                 <span>Total Payable</span>
                 <span>₹{total.toLocaleString('en-IN')}</span>
               </div>
-              <Button variant="success" style={{ width: '100%', padding: '10px', fontWeight: '700', borderRadius: '8px' }} onClick={handleCheckout}>
-                Place Order
+              <Button variant="success" disabled={placing} style={{ width: '100%', padding: '10px', fontWeight: '700', borderRadius: '8px' }} onClick={handleCheckout}>
+                {placing ? 'Placing Order...' : 'Place Order'}
               </Button>
             </div>
           </div>

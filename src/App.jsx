@@ -1,3 +1,4 @@
+import Orders from './component/orders/Orders';
 import React from 'react'
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
@@ -31,7 +32,8 @@ const App = () => {
           )}
           <Route exact path='/home' element={<Home />}></Route>
 
-          <Route path='/cart' element={<Cart />}></Route>
+          <Route path='/cart' element={<Cart />
+        <Route path="/orders" element={<Orders />} />}></Route>
           <Route path='/signup' element={<Signup/>} ></Route>
           <Route path='/login' element={<Login/>} ></Route>
         </Routes>
