@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import './cart.css'
 import { Button, Container } from 'react-bootstrap'
 import { productContext } from '../contextAPI/Context'
 import axios from 'axios'
@@ -43,43 +42,66 @@ const Cart = () => {
   }
 
   return (
-    <Container>
-      <div>
-        {cartProduct && cartProduct.length > 0 ?
-          <div className='cart'>
-            <h4 className='text-center py-3'>{cartProduct.length} items in your Cart</h4>
-            {
-              cartProduct.map(li => (
-                <div key={li._id}>
-                  <div className='item'>
-                    <img src={li.image} className='img' alt={li.title} />
-                    <div className='mx-3'>
-                      <p className="cp-title">{li.title}</p>
-                      <p className="cp-company">{li.company}</p>
-                    </div>
-                    <div className="quantity-counter my-2">
-                      <Button className='mx-3' onClick={() => reduceQty(li._id)}>-</Button>
-                      <p>{parseInt(li.quantity) || 1}</p>
-                      <Button className='mx-3' onClick={() => addQty(li._id)}>+</Button>
-                    </div>
-                    <p className="cp-price text-dark mx-5 my-3">Rs: {(parseInt(li.quantity) || 1) * (parseInt(li.price) || 0)}</p>
-                    <div className="Fbtns">
-                      <Button variant='danger' onClick={() => removeCartItem(li._id)}>Remove</Button>
-                    </div>
-                  </div>
-                </div>
-              ))
-            }
-            <div className="cart-total-bar">
-              <p>Total</p>
-              <p>Rs: {total}</p>
+    <Container style={{ maxWidth: '920px', marginTop: '30px', marginBottom: '40px' }}>
+      {cartProduct && cartProduct.length > 0 ? (
+        <div style={{ background: '#fff', padding: '25px 30px', borderRadius: '12px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}>
+          <h4 className='text-center pb-3 mb-3' style={{ borderBottom: '2px solid #f1f3f5', fontWeight: '700' }}>
+            {cartProduct.length} items in your Cart
+          </h4>
+          {cartProduct.map(li => (
+            <div
+              key={li._id}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '90px 1fr 120px 110px 95px',
+                alignItems: 'center',
+                gap: '16px',
+                padding: '14px 0',
+                borderBottom: '1px solid #e9ecef'
+              }}
+            >
+              <img
+                src={li.image}
+                alt={li.title}
+                style={{ width: '80px', height: '60px', objectFit: 'cover', borderRadius: '8px' }}
+              />
+              <div>
+                <p style={{ fontWeight: '600', fontSize: '16px', margin: '0 0 4px 0', color: '#212529' }}>{li.title}</p>
+                <p style={{ fontSize: '13px', color: '#6c757d', margin: 0 }}>{li.company}</p>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                <Button
+                  size="sm"
+                  variant="outline-dark"
+                  style={{ width: '30px', height: '30px', padding: 0, fontWeight: 'bold' }}
+                  onClick={() => reduceQty(li._id)}
+                >-</Button>
+                <span style={{ minWidth: '22px', textAlign: 'center', fontWeight: '600' }}>{parseInt(li.quantity) || 1}</span>
+                <Button
+                  size="sm"
+                  variant="outline-dark"
+                  style={{ width: '30px', height: '30px', padding: 0, fontWeight: 'bold' }}
+                  onClick={() => addQty(li._id)}
+                >+</Button>
+              </div>
+              <p style={{ fontWeight: '600', fontSize: '16px', margin: 0, textAlign: 'right', color: '#212529' }}>
+                Rs: {(parseInt(li.quantity) || 1) * (parseInt(li.price) || 0)}
+              </p>
+              <div style={{ textAlign: 'right' }}>
+                <Button size="sm" variant='danger' onClick={() => removeCartItem(li._id)}>Remove</Button>
+              </div>
             </div>
-          </div> :
-          <div className='no-items'>
-            <p>No Items are added to the cart</p>
+          ))}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '20px', fontSize: '20px', fontWeight: '700' }}>
+            <span>Total</span>
+            <span>Rs: {total}</span>
           </div>
-        }
-      </div>
+        </div>
+      ) : (
+        <div style={{ textAlign: 'center', padding: '60px 20px', fontSize: '18px', color: '#6c757d' }}>
+          <p>No Items are added to the cart</p>
+        </div>
+      )}
     </Container>
   )
 }
