@@ -223,15 +223,15 @@ const Product = () => {
                         </div>
                         <div>
                             <h6 style={{ color: '#fff', fontWeight: '600' }}>Shop Brands</h6>
-                            <p style={{ fontSize: '13px', margin: 0 }}>Nike • Adidas • Puma • Reebok • Asics • New Balance • Converse</p>
+                            <p style={{ fontSize: '13px', margin: 0 }}>Nike &bull; Adidas &bull; Puma &bull; Reebok &bull; Asics &bull; New Balance &bull; Converse</p>
                         </div>
                         <div>
                             <h6 style={{ color: '#fff', fontWeight: '600' }}>Customer Care</h6>
-                            <p style={{ fontSize: '13px', margin: 0 }}>support@shoestop.in<br />Mon – Sat: 9:00 AM – 7:00 PM</p>
+                            <p style={{ fontSize: '13px', margin: 0 }}>support@shoestop.in<br />Mon - Sat: 9:00 AM - 7:00 PM</p>
                         </div>
                     </div>
                     <div style={{ borderTop: '1px solid #343a40', paddingTop: '15px', textAlign: 'center', fontSize: '12px' }}>
-                        © 2026 ShoeStop E-Commerce Store &bull; Containerized MERN Deployment &bull;{' '}
+                        &copy; 2026 ShoeStop E-Commerce Store &bull; Containerized MERN Deployment &bull;{' '}
                         <a href="https://shoestop-docker-backend.onrender.com/api/health" target="_blank" rel="noreferrer" style={{ color: '#20c997', textDecoration: 'none', fontWeight: '600' }}>
                             System Health: Operational
                         </a>
