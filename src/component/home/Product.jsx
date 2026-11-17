@@ -21,7 +21,7 @@ const Product = () => {
 
     const getProduct = (image,title,company,price) =>{
         const headers = {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${activeToken}`,
           };
         console.log(image,title,company,price);
         axios.post(`${import.meta.env.VITE_API_URL || 'https://shoestop-docker-backend.onrender.com'}/api/addfav`, {
@@ -52,7 +52,7 @@ const Product = () => {
             image,title,company,price
           },{
             headers : {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${activeToken}`,
               }
           })
           .then(function (response) {
