@@ -1,20 +1,92 @@
-.item{
-    display: flex;
-    justify-content: space-around;
-}
-.cp-title{
-    padding-bottom: 0px;
-    margin-bottom: 0%;
-}
-.cp-company{
-    padding-top: 0px;
+.cart {
+  max-width: 950px;
+  margin: 25px auto;
+  background: #ffffff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
-.quantity-counter{
-    display: flex;
+.item {
+  display: grid;
+  grid-template-columns: 95px 1fr 140px 120px 100px;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid #e9ecef;
 }
 
-.quantity-counter>button{
-    width: 4rem;
-    height: 2rem;
+.img {
+  width: 85px;
+  height: 65px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.cp-title {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
+  color: #212529;
+}
+
+.cp-company {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 0;
+}
+
+.quantity-counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.quantity-counter button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-weight: bold;
+  margin: 0 !important;
+}
+
+.quantity-counter p {
+  margin: 0;
+  min-width: 22px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.cp-price {
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0 !important;
+  text-align: right;
+}
+
+.Fbtns {
+  text-align: right;
+}
+
+.cart-total-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 10px 5px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+}
+
+.no-items {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 18px;
+  color: #6c757d;
 }

@@ -70,7 +70,7 @@ const Cart = () => {
                 </div>
               ))
             }
-            <div style={{ display: "flex", justifyContent: "space-around", fontWeight: "bold", fontSize: "18px", padding: "15px" }}>
+            <div className="cart-total-bar">
               <p>Total</p>
               <p>Rs: {total}</p>
             </div>
