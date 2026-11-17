@@ -11,7 +11,7 @@ const Signup = () => {
   const [email, setMail] = useState('')
   const [password, setPassword] = useState('')
 
-  const url = "http://localhost:5000/signup"
+  const url = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/signup`
 
   const changeNameHandler = (e) => {
       setName(e.target.value)
