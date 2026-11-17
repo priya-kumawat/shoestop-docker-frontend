@@ -7,19 +7,12 @@ import { productContext } from '../contextAPI/Context'
 const Product = () => {
     const [products, setProducts] = useState([])
     const { token, getcart } = useContext(productContext)
-    const baseUrl = import.meta.env.VITE_API_URL || 'https://shoestop-docker-backend.onrender.com'
-
-    const fetchData = async () => {
-        try {
-            const res = await axios.get(`${baseUrl}/api/getproducts`)
-            setProducts(res.data)
-        } catch (err) {
-            console.log(err)
-        }
-    }
+    const baseUrl = 'https://shoestop-docker-backend.onrender.com'
 
     useEffect(() => {
-        fetchData()
+        axios.get(`${baseUrl}/api/getproducts`)
+            .then(res => setProducts(res.data))
+            .catch(err => console.log(err))
     }, [])
 
     const addtoCart = (image, title, company, price) => {
@@ -32,9 +25,7 @@ const Product = () => {
         axios.post(`${baseUrl}/api/addcart`, {
             image, title, company, price
         }, {
-            headers: {
-                Authorization: `Bearer ${activeToken}`
-            }
+            headers: { Authorization: `Bearer ${activeToken}` }
         })
         .then(function (response) {
             if (response.status === 202) {
@@ -46,7 +37,7 @@ const Product = () => {
         })
         .catch(function (error) {
             console.log(error)
-            alert(error.response?.data?.message || "Failed to add to cart. Please login again.")
+            alert(error.response?.data?.message || "Session expired. Please logout and login again.")
         })
     }
 

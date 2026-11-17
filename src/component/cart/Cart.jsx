@@ -5,8 +5,7 @@ import { productContext } from '../contextAPI/Context'
 import axios from 'axios'
 
 const Cart = () => {
-  const baseUrl = import.meta.env.VITE_API_URL || 'https://shoestop-docker-backend.onrender.com'
-  const url = `${baseUrl}/api/addcart`
+  const url = 'https://shoestop-docker-backend.onrender.com/api/addcart'
   const { cartProduct, setCartProducts, getcart } = useContext(productContext)
   const [total, setTotal] = useState(0)
 
@@ -30,19 +29,17 @@ const Cart = () => {
   }
 
   const addQty = (id) => {
-    const updatedCartItems = cartProduct.map((item) =>
+    setCartProducts(cartProduct.map(item =>
       item._id === id ? { ...item, quantity: (parseInt(item.quantity) || 1) + 1 } : item
-    )
-    setCartProducts(updatedCartItems)
+    ))
   }
 
   const reduceQty = (id) => {
-    const updatedCartItems = cartProduct.map((item) =>
+    setCartProducts(cartProduct.map(item =>
       item._id === id && (parseInt(item.quantity) || 1) > 1
         ? { ...item, quantity: (parseInt(item.quantity) || 1) - 1 }
         : item
-    )
-    setCartProducts(updatedCartItems)
+    ))
   }
 
   return (
