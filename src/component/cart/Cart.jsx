@@ -6,7 +6,7 @@ import axios from 'axios'
 
 const Cart = () => {
 
-  const url = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/addcart`
+  const url = `${import.meta.env.VITE_API_URL || 'https://shoestop-docker-backend.onrender.com'}/api/addcart`
 
   const { cartProduct, setCartProducts,getcart} = useContext(productContext)
   const [total, setTotal] = useState(0)

@@ -6,7 +6,7 @@ import axios from 'axios'
 
 const Fav = () => {
 
-  const url = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/addfav`
+  const url = `${import.meta.env.VITE_API_URL || 'https://shoestop-docker-backend.onrender.com'}/api/addfav`
 
   const { favProList,setFavProductList, token } = useContext(productContext)
 
@@ -17,7 +17,7 @@ const Fav = () => {
           Authorization: `Bearer ${token}`,
         };
         
-        const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/addfav`, { headers });
+        const response = await axios.get(`${import.meta.env.VITE_API_URL || 'https://shoestop-docker-backend.onrender.com'}/api/addfav`, { headers });
         setFavProductList(response.data);
       }
     } catch (error) {
