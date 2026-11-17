@@ -5,103 +5,75 @@ import { Button } from 'react-bootstrap'
 import { productContext } from '../contextAPI/Context'
 
 const Product = () => {
-
     const [products, setProducts] = useState([])
-
-    const { token } = useContext( productContext )
+    const { token, getcart } = useContext(productContext)
+    const baseUrl = import.meta.env.VITE_API_URL || 'https://shoestop-docker-backend.onrender.com'
 
     const fetchData = async () => {
-        await axios.get(`${import.meta.env.VITE_API_URL || 'https://shoestop-docker-backend.onrender.com'}/api/getproducts`)
-            .then(res => setProducts(res.data))
+        try {
+            const res = await axios.get(`${baseUrl}/api/getproducts`)
+            setProducts(res.data)
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     useEffect(() => {
         fetchData()
     }, [])
 
-    const getProduct = (image,title,company,price) =>{
-        const headers = {
-            Authorization: `Bearer ${activeToken}`,
-          };
-        console.log(image,title,company,price);
-        axios.post(`${import.meta.env.VITE_API_URL || 'https://shoestop-docker-backend.onrender.com'}/api/addfav`, {
-            image,title,company,price
-          },{
-            headers
-          })
-          .then(function (response) {
-            console.log(response);
-            if(response.status === 202)
-            {
-                alert("already in fav list")
-            }
-            else {
-                alert("Item Added to fav")
-                getFav()
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-    }
+    const addtoCart = (image, title, company, price) => {
+        const activeToken = (token || localStorage.getItem('token') || '').replace(/^"|"$/g, '')
+        if (!activeToken) {
+            alert('Please Login first to add items to cart!')
+            return
+        }
 
-    const addtoCart = (image,title,company,price) =>{
-        console.log(token);
-        
-        axios.post(`${import.meta.env.VITE_API_URL || 'https://shoestop-docker-backend.onrender.com'}/api/addcart`, {
-            image,title,company,price
-          },{
-            headers : {
-                Authorization: `Bearer ${activeToken}`,
-              }
-          })
-          .then(function (response) {
-            console.log(response);
-            if(response.status === 202)
-            {
-                alert("already in cart")
+        axios.post(`${baseUrl}/api/addcart`, {
+            image, title, company, price
+        }, {
+            headers: {
+                Authorization: `Bearer ${activeToken}`
             }
-            else {
+        })
+        .then(function (response) {
+            if (response.status === 202) {
+                alert("Already in cart")
+            } else {
                 alert("Item Added to cart")
-               
+                if (getcart) getcart()
             }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        })
+        .catch(function (error) {
+            console.log(error)
+            alert(error.response?.data?.message || "Failed to add to cart. Please login again.")
+        })
     }
-
 
     return (
         <div className='product'>
             <h3 className='text-center p-4'>Products</h3>
-
-
             <div className="pro-layout">
                 {
                     products && products.length > 0 ?
-
-                        products.map(li => {
-                            return <div className='cardz' key={li._id}>
-                                <img src={li.image} className='image' alt="" />
+                        products.map(li => (
+                            <div className='cardz' key={li._id}>
+                                <img src={li.image} className='image' alt={li.title} />
                                 <p className="title">{li.title}</p>
                                 <div className="comrice">
-                                <p className="company">{li.company}</p>
-                                <p className="price text-dark">Rs:{li.price}</p>
+                                    <p className="company">{li.company}</p>
+                                    <p className="price text-dark">Rs:{li.price}</p>
                                 </div>
                                 <div className="btns">
-                                    <Button variant='success px-4' onClick={()=>{ addtoCart(li.image,li.title,li.company,li.price) }}> Add to Cart </Button>
+                                    <Button variant='success px-4' onClick={() => addtoCart(li.image, li.title, li.company, li.price)}>
+                                        Add to Cart
+                                    </Button>
                                 </div>
                             </div>
-                        })
-
-                        : <div>
-                            <p>no product found</p>
-                        </div>
+                        ))
+                        : <div><p>no product found</p></div>
                 }
             </div>
-
-
         </div>
     )
 }
