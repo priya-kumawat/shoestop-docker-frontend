@@ -4,6 +4,11 @@ import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 
 function NavbarLog() {
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userInfo');
+        window.location.href = '/login';
+    };
 
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" data-bs-theme="dark">
@@ -13,14 +18,12 @@ function NavbarLog() {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="m-auto">
                         <Nav.Link href="/">Home</Nav.Link>
-                        {/* <Nav.Link href="/fav">Favourites</Nav.Link> */}
                         <Nav.Link href="/cart">Cart</Nav.Link>
-                       
                     </Nav>
-                    <Nav className="mx-5">
-                    <Button variant="light px-4" href='/login'>log out</Button>               
+                    <Nav className="mx-5" style={{ gap: '10px' }}>
+                        <Button variant="outline-light px-3" href='/signup'>New User Signup</Button>
+                        <Button variant="light px-4" onClick={handleLogout}>log out</Button>
                     </Nav>
-
                 </Navbar.Collapse>
             </Container>
         </Navbar>
